@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="horizontal"
+                android:id="@+id/mainLayout"
+                android:weightSum="1"
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/default_underline_indicator_selected_color">
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/numberPicker"
+        android:gravity="center_vertical|center_horizontal"
+        android:theme="?android:attr/numberPickerStyle"
+        android:layout_marginTop="20dp"
+        style="@android:style/Widget.Material.NumberPicker"
+        android:scrollbarSize="40dip"
+        android:scrollbarStyle="outsideOverlay"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"/>
+
+    <Button
+        android:text="Set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_Set"
+        android:layout_marginTop="122dp"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/textView"/>
+
+    <Button
+        android:text="Cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_Cancel"
+        android:layout_alignBaseline="@+id/btn_Set"
+        android:layout_alignBottom="@+id/btn_Set"
+        android:layout_toEndOf="@+id/textView"/>
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:id="@+id/numberPicker2"
+        android:layout_weight="1"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_height="wrap_content"
+        android:scrollbarSize="40dip"
+        android:scrollbarStyle="outsideOverlay"
+        android:layout_alignBaseline="@+id/numberPicker"
+        android:layout_alignBottom="@+id/numberPicker"
+        android:layout_alignEnd="@+id/btn_Cancel"/>
+
+    <TextView
+        android:text="."
+        android:layout_width="wrap_content"
+        android:id="@+id/textView"
+        android:layout_weight="0.65"
+        android:gravity="center_vertical|center_horizontal"
+        android:theme="?android:attr/numberPickerStyle"
+        android:textStyle="normal|bold"
+        android:textSize="36sp"
+        android:textColor="@android:color/black"
+        android:layout_height="100dp"
+        android:layout_marginStart="19dp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/numberPicker"
+        android:layout_marginTop="29dp"/>
+
+</RelativeLayout>

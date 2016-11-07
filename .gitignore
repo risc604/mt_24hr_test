@@ -1,0 +1,12 @@
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+import-summary.txt
+.idea/
+library/build
+app-debug_20161103_ok.apk

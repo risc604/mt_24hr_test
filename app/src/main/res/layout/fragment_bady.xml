@@ -1,0 +1,147 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/flBady">
+
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="281dp"
+        android:id="@+id/rl_circle"
+        android:background="@drawable/light_blue"
+        android:layout_height="286dp"
+        android:layout_marginLeft="25dp" tools:ignore="RtlHardcoded">
+
+        <ImageView
+            app:srcCompat="@drawable/pic_smile"
+            android:id="@+id/ivSmile"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="32dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+
+        <TextView
+            android:id="@+id/tvTRUnit"
+            android:text="@string/celsius"
+            android:textColor="@color/default_title_indicator_footer_color"
+            android:textSize="18sp"
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:layout_alignTop="@+id/tvTemprature"
+            android:layout_toEndOf="@+id/tvTemprature"
+            android:layout_marginTop="14dp"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:id="@+id/tvTemprature"
+            android:gravity="center_horizontal|bottom"
+            android:textSize="64sp"
+            android:textColor="@color/default_line_indicator_selected_color"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:text="--.--"
+            android:singleLine="true"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:id="@+id/tvYear"
+            android:textColor="@color/default_line_indicator_selected_color"
+            android:textSize="24sp"
+            android:layout_width="200dp"
+            android:textAlignment="gravity"
+            android:layout_below="@+id/tvTemprature"
+            android:layout_centerHorizontal="true"
+            android:background="#00000000"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginTop="320dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_width="320dp"
+        android:layout_height="92dp"
+        android:id="@+id/rl_Setting">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/pic_battery_min"
+            android:id="@+id/ivBattery"
+            android:layout_marginStart="21dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/ivBT"
+            android:layout_marginBottom="12dp"/>
+
+        <ImageView
+            android:layout_height="30dp"
+            app:srcCompat="@android:drawable/stat_sys_data_bluetooth"
+            android:layout_width="30dp"
+            android:id="@+id/ivBT"
+            android:layout_alignTop="@+id/ivBattery" android:layout_alignParentStart="true"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:text="@string/noneLine"
+            android:ems="10"
+            android:id="@+id/tvTPLow"
+            android:textAlignment="center"
+            android:textColor="@android:color/holo_blue_dark"
+            android:layout_width="80dp"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/ivBT"
+            tools:ignore="HardcodedText"
+            android:textSize="30sp"/>
+
+        <ImageView
+            android:layout_width="32dp"
+            app:srcCompat="@drawable/pic_alarm_min"
+            android:id="@+id/ivAlarm"
+            android:layout_height="32dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:text="@string/celsius"
+            android:layout_width="12dp"
+            android:id="@+id/tvUnitH"
+            android:textAlignment="viewStart"
+            android:textColor="@color/default_line_indicator_selected_color"
+            android:layout_height="16dp"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/tvTPLow"/>
+
+        <TextView
+            android:text="@string/celsius"
+            android:layout_width="12dp"
+            android:id="@+id/tvUnitL"
+            android:textAlignment="viewStart"
+            android:textColor="@android:color/holo_red_dark"
+            android:layout_height="16dp"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/tvTPHigh"/>
+
+        <TextView
+            android:id="@+id/tvTPHigh"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="@string/noneLine"
+            android:ems="10"
+            android:textAlignment="center"
+            android:textColor="@android:color/holo_red_dark"
+            android:layout_marginStart="25dp"
+            android:textSize="30sp"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/ivAlarm"/>
+
+    </RelativeLayout>
+
+</FrameLayout>

@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">test_24hr_MT App.</string>
+    <string name="create_your_profile">Create your profile</string>
+    <string name="title_activity_left_side_menu">24hr_MT</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="smile_png">smile_png</string>
+    <string name="graphics">graphics</string>
+    <string name="delete">Delete</string>
+    <string name="noneLine">--.--</string>
+    <string name="celsius">℃</string>
+</resources>
