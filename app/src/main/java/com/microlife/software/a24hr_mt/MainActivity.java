@@ -211,6 +211,7 @@ public class MainActivity extends AppCompatActivity implements fragmentBady.upda
         Log.d(TAG, "onCreate().");
 
         initMainView();
+        //Utils.shortFileName(".log");
 
         /*
         mHandler = new Handler();

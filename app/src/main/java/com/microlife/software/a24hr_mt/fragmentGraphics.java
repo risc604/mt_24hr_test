@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
@@ -29,6 +30,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.ChartTouchListener;
@@ -41,7 +43,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.text.SimpleDateFormat;
 
 /**
  * MPAndroidChart: https://github.com/PhilJay/MPAndroidChart
@@ -63,7 +68,6 @@ public class fragmentGraphics extends PagerFragment implements
     //ArrayList<byte[]>  rawDataList = new ArrayList<>();
     ArrayList<byte[]>  recordTimeList = new ArrayList<>();
     ArrayList<Integer> temperatureList = new ArrayList<>();
-
 
     @Nullable
     @Override
@@ -350,6 +354,7 @@ public class fragmentGraphics extends PagerFragment implements
     public void updateGraphics()
     {
         Log.i(TAG, "updateGraphics() ...");
+        Utils.shortFileName(".log");
 
         //mChart = (LineChart) findViewById(R.id.chart1);
         mChart.setOnChartGestureListener(this);
@@ -381,18 +386,38 @@ public class fragmentGraphics extends PagerFragment implements
         //mChart.setMarker(mv); // Set the marker to the chart
 
         // x-axis limit line
-        LimitLine llXAxis = new LimitLine(10f, "Index 10");
-        llXAxis.setLineWidth(4f);
-        llXAxis.enableDashedLine(10f, 10f, 0f);
+        LimitLine llXAxis = new LimitLine(1.0f, "Index 10");
+        llXAxis.setLineWidth(1f);
+        llXAxis.enableDashedLine(1.0f, 1.0f, 0f);
         //llXAxis.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
         llXAxis.setLabelPosition(LimitLine.LimitLabelPosition.LEFT_BOTTOM);
         llXAxis.setTextSize(10f);
 
+        //IAxisValueFormatter xAxisFormatter = new Ho
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
-        xAxis.enableGridDashedLine(10f, 10f, 0.01f);
+        xAxis.enableGridDashedLine(1.0f, 1.0f, 0.01f);
+        xAxis.setGranularity(1f);
         //xAxis.setValueFormatter(new MyCustomXAxisValueFormatter());
         //xAxis.addLimitLine(llXAxis); // add x-axis limit line
+        xAxis.setValueFormatter(new IAxisValueFormatter()
+        {
+            //private SimpleDateFormat mFormat = new SimpleDateFormat("dd MMM HH:mm");
+            private SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm");
+
+            @Override
+            public String getFormattedValue(float value, AxisBase axisBase)
+            {
+                long millis = TimeUnit.HOURS.toMillis((long) value);
+                return mFormat.format(new Date(millis));
+            }
+
+            @Override
+            public int getDecimalDigits()
+            {
+                return 0;
+            }
+        });
 
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Regular.ttf");
 
@@ -559,15 +584,52 @@ public class fragmentGraphics extends PagerFragment implements
 
     private void setData(ArrayList<byte[]> dateTime, ArrayList<Integer> temperature)
     {
+        long now = TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis());
+        //ArrayList<Date> myDateList = Utils.dtToSecond(dateTime);
+        //long now = TimeUnit.MILLISECONDS.toHours(myDateList.get(0).getTime());
+
         ArrayList<Entry> values = new ArrayList<Entry>();
 
-        //--- user display data.
-        for (int i=0; i<temperature.size(); i++)
+        float from = now;
+        float to = now + temperature.size();
+        //float to = now + ;
+
+        for (float x=from; x<to; x++)
         {
-            float val = ((float) temperature.get(i)/100.0f);
-            //Log.d(TAG, "temperature: " + val);
-            values.add(new Entry(i, val));
+            float y = ((float) temperature.get((int)(x-from))/10);
+            //float y = getRandom(30, 50);
+            //float y = (float)(Math.random() * 30 + 50);
+            values.add(new Entry(((int)x), y));
         }
+
+        // create a dataset and give it a type
+        LineDataSet set1 = new LineDataSet(values, "DataSet 1");
+        set1.setAxisDependency(YAxis.AxisDependency.LEFT);
+        set1.setColor(ColorTemplate.getHoloBlue());
+        set1.setValueTextColor(ColorTemplate.getHoloBlue());
+        set1.setLineWidth(1.5f);
+        set1.setDrawCircleHole(false);
+        set1.setDrawValues(false);
+        set1.setFillAlpha(65);
+        set1.setFillColor(ColorTemplate.getHoloBlue());
+        set1.setHighLightColor(Color.rgb(244, 117, 117));
+        set1.setDrawCircleHole(false);
+
+        LineData data = new LineData(set1);
+        data.setValueTextColor(Color.WHITE);
+        data.setValueTextSize(9f);
+
+        mChart.setData(data);
+
+
+        /*
+        //--- user display data.
+        //for (int i=0; i<temperature.size(); i++)
+        //{
+        //    float val = ((float) temperature.get(i)/100.0f);
+        //    //Log.d(TAG, "temperature: " + val);
+        //    values.add(new Entry(i, val));
+        //}
 
         LineDataSet     set1;
         if ((mChart.getData() != null) && (mChart.getData().getDataSetCount() > 0))
@@ -615,7 +677,9 @@ public class fragmentGraphics extends PagerFragment implements
 
             // set data
             mChart.setData(data);
+
         }
+        */
     }
 
     private void setDataDemo(int count, float range)

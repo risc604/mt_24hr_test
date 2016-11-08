@@ -6,7 +6,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -142,6 +145,50 @@ public class Utils
             Log.d(TAG, "write File fail !");
         }
     }
+
+    //public static ArrayList<Long> dtToSecond(ArrayList<byte[]> data)
+    public static ArrayList<Date> dtToSecond(ArrayList<byte[]> data)
+    {
+        //Date today = new Date();
+        ArrayList<Date> dateList = new ArrayList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmm");
+
+        //--- convert raw data time to Java Date Object.
+        for(int i=0; i<data.size(); i++)
+        //for(int i=0; i<40; i++)
+        {
+            String tmpDate = String.format("%02d%02d%02d%02d%02d", data.get(i)[0],
+                    data.get(i)[1], data.get(i)[2], data.get(i)[3], data.get(i)[4]);
+            Date tmpTime = new Date();
+            try
+            {
+                tmpTime = sdf.parse(tmpDate);
+            }
+            catch (java.text.ParseException e)
+            {
+                e.printStackTrace();
+            }
+
+            dateList.add(tmpTime);
+            System.out.printf("date[%d]: %s%n", i, sdf.format(tmpTime));
+        }
+
+        /*
+        //--- Calculate time difference by seconds from first record.
+        ArrayList<Long> diffSecondList = new ArrayList<>();
+        for(int i=0; i<dateList.size(); i++)
+        //for(int i=0; i<40; i++)
+        {
+            long tmpDiffSec = dateList.get(i).getTime() - dateList.get(0).getTime();
+            diffSecondList.add(tmpDiffSec);
+            System.out.printf("diff Sec[%02d]: %d%n", i, tmpDiffSec/1000);
+        }
+        return diffSecondList;
+        */
+
+        return dateList;
+    }
+
 
     public static int byteToUnsignedInt(byte b)
     {
