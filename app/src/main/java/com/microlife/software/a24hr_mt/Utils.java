@@ -170,8 +170,16 @@ public class Utils
             }
 
             dateList.add(tmpTime);
-            System.out.printf("date[%d]: %s%n", i, sdf.format(tmpTime));
+            Log.d(TAG, "date[" + i + "]: " + sdf.format(tmpTime));
+            //System.out.printf("date[%d]: %s%n", i, sdf.format(tmpTime));
         }
+
+        //Log.d(TAG, "dtToSecond(), covert date List size: " + data.size() );
+        //Log.d(TAG, "dtToSecond(), dateList size:" + dateList.size() + ", dateList[0]:{" + dateList.get(0) +
+        //        "}, dateList[" + (dateList.size() - 1) + "]:{" + dateList.get(dateList.size()-1) + "}" );
+        Log.d(TAG, "dtToSecond(), dateList size:" + dateList.size() + ", dateList[0]: " + sdf.format(dateList.get(0)) +
+                ", dateList[" + (dateList.size() - 1) + "]: " + sdf.format(dateList.get(dateList.size()-1)) );
+
 
         /*
         //--- Calculate time difference by seconds from first record.
@@ -187,6 +195,23 @@ public class Utils
         */
 
         return dateList;
+    }
+
+    public static ArrayList<Long> dtDeffrenceList(ArrayList<Date> data)
+    {
+        ArrayList<Long> diffSecondList = new ArrayList<>();
+        for(int i=0; i<data.size(); i++)
+        //for(int i=0; i<40; i++)
+        {
+            long tmpDiffSec = data.get(i).getTime() - data.get(0).getTime();
+            diffSecondList.add(tmpDiffSec);
+            //System.out.printf("diff Sec[%02d]: %d%n", i, tmpDiffSec/1000);
+            Log.d(TAG, "diffSecondList[" + i + "]: " + tmpDiffSec);
+        }
+
+        Log.d(TAG, "dtDeffrenceList(), diffSecondList size:" + diffSecondList.size() + ", diffSecondList[0]: " + diffSecondList.get(0) +
+                ", diffSecondList[" + (diffSecondList.size() - 1) + "]: " + diffSecondList.get(diffSecondList.size()-1) );
+        return diffSecondList;
     }
 
 

@@ -94,8 +94,9 @@ public class fragmentGraphics extends PagerFragment implements
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-
-        updateGraphics();
+        Utils.shortFileName(".log");
+        onPageIn();
+        //updateGraphics();
     }
 
     @Override
@@ -395,20 +396,24 @@ public class fragmentGraphics extends PagerFragment implements
 
         //IAxisValueFormatter xAxisFormatter = new Ho
         XAxis xAxis = mChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
-        xAxis.enableGridDashedLine(1.0f, 1.0f, 0.01f);
-        xAxis.setGranularity(1f);
+        //xAxis.setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        //xAxis.enableGridDashedLine(1.0f, 1.0f, 0.01f);
+        xAxis.enableGridDashedLine(3.0f, 3.0f, 0.1f);
+        xAxis.setGranularity(0.01f);
         //xAxis.setValueFormatter(new MyCustomXAxisValueFormatter());
         //xAxis.addLimitLine(llXAxis); // add x-axis limit line
         xAxis.setValueFormatter(new IAxisValueFormatter()
         {
             //private SimpleDateFormat mFormat = new SimpleDateFormat("dd MMM HH:mm");
-            private SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm");
+            //private SimpleDateFormat mFormat = new SimpleDateFormat("MM/dd HH:mm");
+            private SimpleDateFormat mFormat = new SimpleDateFormat("dd/HH:mm");
 
             @Override
             public String getFormattedValue(float value, AxisBase axisBase)
             {
                 long millis = TimeUnit.HOURS.toMillis((long) value);
+                //Log.d(TAG, "SimpleDateFormat: " + mFormat.toString() + ", millis: " + millis);
                 return mFormat.format(new Date(millis));
             }
 
@@ -421,16 +426,18 @@ public class fragmentGraphics extends PagerFragment implements
 
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Regular.ttf");
 
-        LimitLine ll1 = new LimitLine(150f, "Upper Limit");
-        ll1.setLineWidth(4f);
-        ll1.enableDashedLine(10f, 10f, 0f);
+        //LimitLine ll1 = new LimitLine(150f, "Upper Limit");
+        LimitLine ll1 = new LimitLine(38f, "Upper Limit");
+        ll1.setLineWidth(2f);
+        ll1.enableDashedLine(1.0f, 1.0f, 0f);
         ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
         ll1.setTextSize(10f);
         ll1.setTypeface(tf);
 
-        LimitLine ll2 = new LimitLine(-30f, "Lower Limit");
-        ll2.setLineWidth(4f);
-        ll2.enableDashedLine(10f, 10f, 0f);
+        //LimitLine ll2 = new LimitLine(-30f, "Lower Limit");
+        LimitLine ll2 = new LimitLine(32f, "Lower Limit");
+        ll2.setLineWidth(2f);
+        ll2.enableDashedLine(1.0f, 1.0f, 0f);
         ll2.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
         ll2.setTextSize(10f);
         ll2.setTypeface(tf);
@@ -439,10 +446,12 @@ public class fragmentGraphics extends PagerFragment implements
         leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
         leftAxis.addLimitLine(ll1);
         leftAxis.addLimitLine(ll2);
-        leftAxis.setAxisMaximum(200f);
-        leftAxis.setAxisMinimum(-50f);
+        //leftAxis.setAxisMaximum(200f);
+        //leftAxis.setAxisMinimum(-50f);
+        leftAxis.setAxisMaximum(50f);
+        leftAxis.setAxisMinimum(20f);
         //leftAxis.setYOffset(20f);
-        leftAxis.enableGridDashedLine(10f, 10f, 0f);
+        leftAxis.enableGridDashedLine(1.0f, 1.0f, 0f);
         leftAxis.setDrawZeroLine(false);
 
         // limit lines are drawn behind data (and not on top)
@@ -540,7 +549,9 @@ public class fragmentGraphics extends PagerFragment implements
             }
         }
 
-        Log.d(TAG, "to read " + dateTime.size() + " records");
+        //Log.d(TAG, "to read " + dateTime.size() + " records");
+        Log.d(TAG, "getTimeList(), dateTime size:" + dateTime.size() + ", dateTime[0]: " + Utils.getHexToString(dateTime.get(0)) +
+                ", dateTime[" + (dateTime.size() - 1) + "]: " + Utils.getHexToString(dateTime.get(dateTime.size()-1)) );
 
         //--- debug message
         //for (int i=0; i<dateTime.size(); i++)
@@ -571,7 +582,8 @@ public class fragmentGraphics extends PagerFragment implements
             }
         }
 
-        Log.d(TAG, "tmplist size:" + tmplist.size());
+        Log.d(TAG, "getTemperatureList(), tmplist size:" + tmplist.size() + ", tmpList[0]: " + tmplist.get(0) +
+                ", tmpList[" + (tmplist.size() - 1) + "]: " + tmplist.get(tmplist.size()-1) );
 
         //--- debug message
         //for(int i=0; i<tmplist.size(); i++)
@@ -584,26 +596,52 @@ public class fragmentGraphics extends PagerFragment implements
 
     private void setData(ArrayList<byte[]> dateTime, ArrayList<Integer> temperature)
     {
-        long now = TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis());
-        //ArrayList<Date> myDateList = Utils.dtToSecond(dateTime);
-        //long now = TimeUnit.MILLISECONDS.toHours(myDateList.get(0).getTime());
+        //long now = TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis());
+        ArrayList<Date> myDateList = Utils.dtToSecond(dateTime);
+        //ArrayList<Long> mySecondList = Utils.dtDeffrenceList(myDateList);
+
+        //long now = TimeUnit.MILLISECONDS.toDays(myDateList.get(0).getTime());
+        long now = TimeUnit.MILLISECONDS.toHours(myDateList.get(1).getTime());
+        //long now = TimeUnit.MILLISECONDS.toMinutes(myDateList.get(1).getTime());
+
+        Log.d(TAG, " TimeUnit.MILLISECONDS.toMinutes(): " + TimeUnit.MILLISECONDS.toMinutes(myDateList.get(1).getTime()));
 
         ArrayList<Entry> values = new ArrayList<Entry>();
 
         float from = now;
-        float to = now + temperature.size();
+        //float to = now + temperature.size();
+        float to = now + dateTime.size()-1;
+        //float to = now + 5;
+        //float to = now +  TimeUnit.MILLISECONDS.toHours(myDateList.get(myDateList.size()-1).getTime());
         //float to = now + ;
+        Log.d(TAG, "setData(), myDateList[0]:" + myDateList.get(0).getTime() + ", from: " + now + ", to: " + to);
+
+        //float x=from;
+        //float y = ((float) temperature.get((int)(x-from))/100);
+        //Log.d(TAG, "setData(), temperature.get(" + (x - from) + "), y: " + y);
+
 
         for (float x=from; x<to; x++)
         {
-            float y = ((float) temperature.get((int)(x-from))/10);
+            float y = ((float) temperature.get(((int)(x-from)+1))/100);
             //float y = getRandom(30, 50);
             //float y = (float)(Math.random() * 30 + 50);
-            values.add(new Entry(((int)x), y));
+            //Log.d(TAG, "setData(), temperature.get(" + (x - from) + "), y: " + y);
+            Log.d(TAG, "setData(), x:" + x + ", to: " + to + "x-form: " + (x-from));
+            //Log.d(TAG, "setData(), temperature.get(" + (x - from) + "), y: " + y);
+
+            //long nowii = TimeUnit.MILLISECONDS.toMinutes(myDateList.get((int)(x-from)).getTime());
+
+            values.add(new Entry(x, y));
         }
 
+
+
+
+
         // create a dataset and give it a type
-        LineDataSet set1 = new LineDataSet(values, "DataSet 1");
+        //LineDataSet set1 = new LineDataSet(values, "DataSet 1");
+        LineDataSet set1 = new LineDataSet(values, "℃");
         set1.setAxisDependency(YAxis.AxisDependency.LEFT);
         set1.setColor(ColorTemplate.getHoloBlue());
         set1.setValueTextColor(ColorTemplate.getHoloBlue());
