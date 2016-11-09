@@ -500,13 +500,18 @@ public class fragmentGraphics extends PagerFragment implements
         try
         {
             BufferedReader br = new BufferedReader(new FileReader(logFile));
-            String      line;
+            String      line, tmpLine;
 
+            tmpLine = "";
             while((line = br.readLine()) != null)
             {
-                rawDataList.add(Utils.hexStringToByteArray(line));
-                lineCounts++;
-                //Log.i(TAG, "raw data[" + (lineCounts) + "] = " + line);
+                if(!line.equalsIgnoreCase(tmpLine))
+                {
+                    tmpLine = line;
+                    rawDataList.add(Utils.hexStringToByteArray(tmpLine));
+                    lineCounts++;
+                    //Log.i(TAG, "raw data[" + (lineCounts) + "] = " + line);
+                }
             }
             br.close();
             Log.i(TAG, name + ", to read " + (lineCounts) + " lines");
