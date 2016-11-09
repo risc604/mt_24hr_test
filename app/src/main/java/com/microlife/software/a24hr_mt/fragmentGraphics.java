@@ -400,9 +400,10 @@ public class fragmentGraphics extends PagerFragment implements
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         //xAxis.enableGridDashedLine(1.0f, 1.0f, 0.01f);
         xAxis.enableGridDashedLine(3.0f, 3.0f, 0.1f);
-        xAxis.setGranularity(0.01f);
+        xAxis.setGranularity(1f);
         //xAxis.setValueFormatter(new MyCustomXAxisValueFormatter());
         //xAxis.addLimitLine(llXAxis); // add x-axis limit line
+        /*
         xAxis.setValueFormatter(new IAxisValueFormatter()
         {
             //private SimpleDateFormat mFormat = new SimpleDateFormat("dd MMM HH:mm");
@@ -423,6 +424,7 @@ public class fragmentGraphics extends PagerFragment implements
                 return 0;
             }
         });
+        */
 
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Regular.ttf");
 
@@ -606,7 +608,7 @@ public class fragmentGraphics extends PagerFragment implements
         //ArrayList<Long> mySecondList = Utils.dtDeffrenceList(myDateList);
 
         //long now = TimeUnit.MILLISECONDS.toDays(myDateList.get(0).getTime());
-        long now = TimeUnit.MILLISECONDS.toHours(myDateList.get(1).getTime());
+        long now = TimeUnit.MILLISECONDS.toHours(myDateList.get(0).getTime());
         //long now = TimeUnit.MILLISECONDS.toMinutes(myDateList.get(1).getTime());
 
         Log.d(TAG, " TimeUnit.MILLISECONDS.toMinutes(): " + TimeUnit.MILLISECONDS.toMinutes(myDateList.get(1).getTime()));
@@ -615,7 +617,7 @@ public class fragmentGraphics extends PagerFragment implements
 
         float from = now;
         //float to = now + temperature.size();
-        float to = now + dateTime.size()-1;
+        float to = now + dateTime.size();
         //float to = now + 5;
         //float to = now +  TimeUnit.MILLISECONDS.toHours(myDateList.get(myDateList.size()-1).getTime());
         //float to = now + ;
@@ -628,7 +630,7 @@ public class fragmentGraphics extends PagerFragment implements
 
         for (float x=from; x<to; x++)
         {
-            float y = ((float) temperature.get(((int)(x-from)+1))/100);
+            float y = ((float) temperature.get(((int)(x-from)))/100);
             //float y = getRandom(30, 50);
             //float y = (float)(Math.random() * 30 + 50);
             //Log.d(TAG, "setData(), temperature.get(" + (x - from) + "), y: " + y);
@@ -661,6 +663,8 @@ public class fragmentGraphics extends PagerFragment implements
         LineData data = new LineData(set1);
         data.setValueTextColor(Color.WHITE);
         data.setValueTextSize(9f);
+
+        mChart.getXAxis().setValueFormatter(new MyAxisValueFormatter());
 
         mChart.setData(data);
 
