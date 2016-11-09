@@ -399,11 +399,11 @@ public class fragmentGraphics extends PagerFragment implements
         //xAxis.setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         //xAxis.enableGridDashedLine(1.0f, 1.0f, 0.01f);
-        xAxis.enableGridDashedLine(3.0f, 3.0f, 0.1f);
+        xAxis.enableGridDashedLine(1.0f, 1.0f, 0.1f);
         xAxis.setGranularity(1f);
         //xAxis.setValueFormatter(new MyCustomXAxisValueFormatter());
         //xAxis.addLimitLine(llXAxis); // add x-axis limit line
-        /*
+
         xAxis.setValueFormatter(new IAxisValueFormatter()
         {
             //private SimpleDateFormat mFormat = new SimpleDateFormat("dd MMM HH:mm");
@@ -413,8 +413,11 @@ public class fragmentGraphics extends PagerFragment implements
             @Override
             public String getFormattedValue(float value, AxisBase axisBase)
             {
-                long millis = TimeUnit.HOURS.toMillis((long) value);
-                //Log.d(TAG, "SimpleDateFormat: " + mFormat.toString() + ", millis: " + millis);
+                //long millis = TimeUnit.HOURS.toMillis((long) value*1000);
+                //long millis = TimeUnit.MILLISECONDS.toMillis((long) value);
+                long millis = TimeUnit.MILLISECONDS.toSeconds((long) value*1000);
+                //long millis = TimeUnit.MILLISECONDS.toMinutes((long) value);
+                Log.d(TAG, "SimpleDateFormat: " + mFormat.format(millis) + ", millis: " + millis + ", value: " + value);
                 return mFormat.format(new Date(millis));
             }
 
@@ -424,7 +427,7 @@ public class fragmentGraphics extends PagerFragment implements
                 return 0;
             }
         });
-        */
+
 
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Regular.ttf");
 
@@ -604,42 +607,53 @@ public class fragmentGraphics extends PagerFragment implements
     private void setData(ArrayList<byte[]> dateTime, ArrayList<Integer> temperature)
     {
         //long now = TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis());
-        ArrayList<Date> myDateList = Utils.dtToSecond(dateTime);
-        //ArrayList<Long> mySecondList = Utils.dtDeffrenceList(myDateList);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/HH:mm");
+        ArrayList<Date>     dateList = Utils.dtToSecond(dateTime);
+        ArrayList<Integer>  in3DaysList = Utils.checkOver3Days(dateList);
+        ArrayList<Integer>  displayList = Utils.get180Records(in3DaysList, in3DaysList.size()-1);
+        ArrayList<Long> mySecondList = Utils.dtDeffrenceList(dateList);
 
         //long now = TimeUnit.MILLISECONDS.toDays(myDateList.get(0).getTime());
-        long now = TimeUnit.MILLISECONDS.toHours(myDateList.get(0).getTime());
-        //long now = TimeUnit.MILLISECONDS.toMinutes(myDateList.get(1).getTime());
-
-        Log.d(TAG, " TimeUnit.MILLISECONDS.toMinutes(): " + TimeUnit.MILLISECONDS.toMinutes(myDateList.get(1).getTime()));
+        //long now = TimeUnit.MILLISECONDS.toHours(myDateList.get(0).getTime());
+        //long now = TimeUnit.MILLISECONDS.toMinutes(dateList.get(displayList.get(0)).getTime());
+        long now = dateList.get(displayList.get(0)).getTime();
+        Log.d(TAG, " sdf.format(now) :" + sdf.format(now));
+        //Log.d(TAG, " TimeUnit.MILLISECONDS.toMinutes(): " + TimeUnit.MILLISECONDS.toMinutes(myDateList.get(1).getTime()));
 
         ArrayList<Entry> values = new ArrayList<Entry>();
 
         float from = now;
         //float to = now + temperature.size();
-        float to = now + dateTime.size();
+        float to = now + displayList.size();
         //float to = now + 5;
         //float to = now +  TimeUnit.MILLISECONDS.toHours(myDateList.get(myDateList.size()-1).getTime());
         //float to = now + ;
-        Log.d(TAG, "setData(), myDateList[0]:" + myDateList.get(0).getTime() + ", from: " + now + ", to: " + to);
+        Log.d(TAG, "setData(), dateList[0]:" + dateList.get(0).getTime() + ", from: " + now + ", to: " + to);
 
         //float x=from;
         //float y = ((float) temperature.get((int)(x-from))/100);
         //Log.d(TAG, "setData(), temperature.get(" + (x - from) + "), y: " + y);
 
 
-        for (float x=from; x<to; x++)
+        int indx;
+        //for (float x=from; x<to; x++)
+        for (int i=0; i<displayList.size(); i++)
         {
-            float y = ((float) temperature.get(((int)(x-from)))/100);
+            indx = displayList.get(i);
+            now += (mySecondList.get(indx));
+            Log.d(TAG, "[" + i + "] sdf.format(now) :" + sdf.format(now));
+            //now +
+            float y = ((float) temperature.get(indx)/100);
             //float y = getRandom(30, 50);
             //float y = (float)(Math.random() * 30 + 50);
             //Log.d(TAG, "setData(), temperature.get(" + (x - from) + "), y: " + y);
-            Log.d(TAG, "setData(), x:" + x + ", to: " + to + "x-form: " + (x-from));
+            //Log.d(TAG, "setData(), x:" + now + ", to: " + to + ",x-form: " + (x-from));
+            Log.d(TAG, "setData(), x:" + now );
             //Log.d(TAG, "setData(), temperature.get(" + (x - from) + "), y: " + y);
 
             //long nowii = TimeUnit.MILLISECONDS.toMinutes(myDateList.get((int)(x-from)).getTime());
 
-            values.add(new Entry(x, y));
+            values.add(new Entry(now, y));
         }
 
 
@@ -664,7 +678,7 @@ public class fragmentGraphics extends PagerFragment implements
         data.setValueTextColor(Color.WHITE);
         data.setValueTextSize(9f);
 
-        mChart.getXAxis().setValueFormatter(new MyAxisValueFormatter());
+       // mChart.getXAxis().setValueFormatter(new MyAxisValueFormatter());
 
         mChart.setData(data);
 
@@ -777,7 +791,8 @@ public class fragmentGraphics extends PagerFragment implements
                 Drawable drawable = ContextCompat.getDrawable(this.getContext(), R.drawable.fade_red);
                 set1.setFillDrawable(drawable);
             }
-            else {
+            else
+            {
                 set1.setFillColor(Color.BLACK);
             }
 
