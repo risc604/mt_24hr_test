@@ -553,7 +553,15 @@ public class fragmentGraphics extends PagerFragment implements
             //--- create date/time list
             for (int k=0; k<=records; k++)
             {
-                if (k > 0)  tmpDate[4]++;
+                if (k > 0)
+                {
+                    tmpDate[4]++;
+                    if (tmpDate[4] > 0x3B)      // minute > 59
+                    {
+                        tmpDate[3]++;			// Hour increase
+                        tmpDate[4] -= 0x3C;		// minute minus 60.
+                    }
+                }
                 byte[] newTmepTime = tmpDate.clone();
                 dateTime.add(newTmepTime);
             }
@@ -622,7 +630,7 @@ public class fragmentGraphics extends PagerFragment implements
 
         ArrayList<Entry> values = new ArrayList<Entry>();
 
-        float from = (now/1);
+        float from = now;
         //float to = now + temperature.size();
         float to = now + displayList.size();
         //float to = now + 5;
@@ -655,8 +663,6 @@ public class fragmentGraphics extends PagerFragment implements
 
             values.add(new Entry(now, y));
         }
-
-
 
 
 

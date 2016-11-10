@@ -94,7 +94,7 @@ public class fragmentBady extends PagerFragment implements NumberPicker.OnValueC
 
         imgBT = (ImageView) root.findViewById(R.id.ivUserProfile);
         imgBattery = (ImageView) root.findViewById(R.id.ivBattery);
-
+        imgBattery.setVisibility(View.INVISIBLE);
 
         //BdtvTemprature.setText("--.--");
     }

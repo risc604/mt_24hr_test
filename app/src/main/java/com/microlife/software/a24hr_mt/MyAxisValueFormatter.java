@@ -24,4 +24,6 @@ public class MyAxisValueFormatter implements IAxisValueFormatter
     public int getDecimalDigits() {
         return 1;
     }
+
+
 }

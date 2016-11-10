@@ -64,11 +64,13 @@ public class MainActivity extends AppCompatActivity implements fragmentBady.upda
     ViewPager               mPager;
     ViewPagerAdapter        mAdapter;
     private PageIndicator   mIndicator;
+    static int              vBatValue = 0;
 
     private String          bleParserInfo = "";
     int totalLength = 0;
     int calLength = 0;
-    static String  checkWirteTimeString = "";
+    int changeFramge=0xff;
+    static String           checkWirteTimeString = "";
 
 
 
@@ -509,6 +511,7 @@ public class MainActivity extends AppCompatActivity implements fragmentBady.upda
         float vbat = ((float)intVBat / 100);
         String tmp = (int)rawData[5] + "." + (int)rawData[6];
 
+        setVBat(intVBat);
         showTemperatureUI(tmp);
         Log.d(TAG, "cmdAction_A0: " + tmp + "℃" + ", vBat: " + vbat + "v");
     }
@@ -738,6 +741,16 @@ public class MainActivity extends AppCompatActivity implements fragmentBady.upda
         }
     }
 
+    public void setVBat(int value)
+    {
+        vBatValue = value;
+    }
+
+    public int getVBat()
+    {
+        return vBatValue ;
+    }
+
     private void initMainView()
     {
         Log.i(TAG, "initMainView() ...");
@@ -827,16 +840,21 @@ public class MainActivity extends AppCompatActivity implements fragmentBady.upda
         public void startUpdate(ViewGroup container)
         {
             Log.e(TAG, "startUpdate(), mPager.getCurrentItem(): " +  mPager.getCurrentItem());
+            int tmpItemId = mPager.getCurrentItem();
 
-            switch (mPager.getCurrentItem())
+            if (tmpItemId != changeFramge)  // NOT every times to update.
             {
-                case 0:
-                    break;
+                changeFramge = tmpItemId;
+                switch (changeFramge)
+                {
+                    case 0:
+                        break;
 
-                case 1:     //update graphics data by log file.
-                    //mAdapter.fGraphics.onPageIn();
-                    mAdapter.fGraphics.updateGraphics();
-                    break;
+                    case 1:     //update graphics data by log file.
+                        //mAdapter.fGraphics.onPageIn();
+                        mAdapter.fGraphics.updateGraphics();
+                        break;
+                }
             }
             //super.startUpdate(container);
         }
