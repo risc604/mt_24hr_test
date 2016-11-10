@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.String.format;
 
@@ -197,13 +198,87 @@ public class Utils
         return dateList;
     }
 
+    public static ArrayList<Integer> get180Records(ArrayList<Integer> srcList, int lastIndex)
+    {
+        ArrayList<Integer> indexList = new ArrayList<>();
+        int start =0 ;
+
+        //callAgain++;
+
+        //if(srcList.size() >= 180)
+        if(lastIndex >= 180)
+        {
+            start = lastIndex - 180;
+        }
+        else if(lastIndex < 180)
+        {
+            start = 0;
+        }
+
+        //for(int i=start; i < srcList.size(); i++)
+        for(int i=start; i<=lastIndex ; i++)
+        {
+            indexList.add(srcList.get(i));
+        }
+
+        //--- debug massage
+        //for(int i=0; i<indexList.size(); i++)
+        //   System.out.printf("get180Records(), indexList[%02d] = %04d,  callAgain: %02d %n", i, indexList.get(i), callAgain );
+        for(int i=0; i<indexList.size(); i++)
+           Log.d(TAG, "get180Records(), indexList[" + i + "] = " + indexList.get(i));
+
+        return indexList;
+    }
+
+    public static ArrayList<Integer> checkOver3Days(ArrayList<Date> dateList)
+    {
+        ArrayList<Integer> indexList = new ArrayList<>();
+        long timeStemp = 3 * 86400;	//over 3 days
+        int k;
+
+        for(int i=0; i<dateList.size(); i++)
+        {
+            if(i>=(dateList.size()-1))
+                k = dateList.size()-1;
+            else
+                k = i+1;
+
+            long now = TimeUnit.MILLISECONDS.toSeconds(dateList.get(k).getTime() - dateList.get(i).getTime());
+            if((now < timeStemp) && (i<dateList.size()))
+            {
+                indexList.add(i);
+            }
+
+            //System.out.printf("get180RecordList(), indexList[%02d]: %d %n", i, indexList.get(i));
+            //System.out.printf("diffSecList(), MILLISECONDS.toSeconds.[%02d]: %d, dateList[%02d]:{%s} %n",
+            //			i, now, i, sdf.format((dateList.get(0).getTime() + longList.get(i-1))));
+        }
+
+        //--- debug massage
+        for(int j=0; j<indexList.size(); j++)
+        {
+            //System.out.printf("getLast3DaysList(), indexList[%02d]: %d %n", j, indexList.get(j));
+            Log.d(TAG, "getLast3DaysList(), indexList[" + j + "]: " + indexList.get(j) );
+        }
+
+        return indexList;
+    }
+
+
     public static ArrayList<Long> dtDeffrenceList(ArrayList<Date> data)
     {
         ArrayList<Long> diffSecondList = new ArrayList<>();
+        int k;
+
         for(int i=0; i<data.size(); i++)
         //for(int i=0; i<40; i++)
         {
-            long tmpDiffSec = data.get(i).getTime() - data.get(0).getTime();
+            if(i>=(data.size()-1))
+                k = data.size()-1;
+            else
+                k = i+1;
+
+            long tmpDiffSec = data.get(k).getTime() - data.get(i).getTime();
             diffSecondList.add(tmpDiffSec);
             //System.out.printf("diff Sec[%02d]: %d%n", i, tmpDiffSec/1000);
             Log.d(TAG, "diffSecondList[" + i + "]: " + tmpDiffSec);

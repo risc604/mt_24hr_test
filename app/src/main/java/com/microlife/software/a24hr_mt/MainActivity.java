@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements fragmentBady.upda
     private String          bleParserInfo = "";
     int totalLength = 0;
     int calLength = 0;
+    static String  checkWirteTimeString = "";
 
 
 
@@ -599,10 +600,14 @@ public class MainActivity extends AppCompatActivity implements fragmentBady.upda
         String temperature = Utils.convertArrayToString(data, 13, (records * 3));
         try
         {
-            BufferedWriter logFile = new BufferedWriter(new FileWriter(fileName, true)); // append write.
-            logFile.write(dateTime + temperature + "\r\n");
-            logFile.close();
-            Log.d(TAG, fileName + ", has written OK ...");
+            if (!checkWirteTimeString.equalsIgnoreCase(dateTime))
+            {
+                checkWirteTimeString = dateTime;
+                BufferedWriter logFile = new BufferedWriter(new FileWriter(fileName, true)); // append write.
+                logFile.write(dateTime + temperature + "\r\n");
+                logFile.close();
+                Log.d(TAG, fileName + ", has written OK ...");
+            }
         }
         catch (IOException e)
         {
