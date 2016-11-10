@@ -603,16 +603,16 @@ public class fragmentGraphics extends PagerFragment implements
         //ArrayList<Long> mySecondList = Utils.dtDeffrenceList(myDateList);
 
         //long now = TimeUnit.MILLISECONDS.toDays(myDateList.get(0).getTime());
-        long now = TimeUnit.MILLISECONDS.toHours(myDateList.get(0).getTime());
-        //long now = TimeUnit.MILLISECONDS.toMinutes(myDateList.get(1).getTime());
+        //long now = TimeUnit.MILLISECONDS.toHours(myDateList.get(0).getTime());
+        long now = TimeUnit.MILLISECONDS.toMinutes(myDateList.get(1).getTime());
 
         Log.d(TAG, " TimeUnit.MILLISECONDS.toMinutes(): " + TimeUnit.MILLISECONDS.toMinutes(myDateList.get(1).getTime()));
 
         ArrayList<Entry> values = new ArrayList<Entry>();
 
-        float from = now;
+        float from = (now/1);
         //float to = now + temperature.size();
-        float to = now + dateTime.size();
+        float to = (now + (float)dateTime.size());
         //float to = now + 5;
         //float to = now +  TimeUnit.MILLISECONDS.toHours(myDateList.get(myDateList.size()-1).getTime());
         //float to = now + ;
