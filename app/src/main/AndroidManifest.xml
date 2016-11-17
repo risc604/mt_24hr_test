@@ -29,33 +29,33 @@
         android:theme="@style/Theme.AppCompat.NoActionBar">
 
         <activity android:name=".MainActivity">
-        <!-- activity android:name=".LoadingActivity" -->
 
-            <!-- activity android:name=".leftSideMenu" -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity android:name=".LoginActivity">
         </activity>
+
         <activity android:name=".LoadingActivity">
-
-            <!-- <activity android:name=".LoadingActivity"> -->
         </activity>
+
         <activity
-            android:name=".leftSideMenu"
-            android:label="@string/title_activity_left_side_menu"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
 
-            <!-- android:parentActivityName=".LoginActivity" -->
-            <!--
-                meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.microlife.software.a24hr_mt.LoginActivity"/
-            -->
+        android:name=".leftSideMenu"
+        android:label="@string/title_activity_left_side_menu"
+        android:theme="@style/Theme.AppCompat.NoActionBar">
+        <!--
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN"/>
+            <category android:name="android.intent.category.LAUNCHER"/>
+        </intent-filter>
+        -->
+
         </activity>
+
         <activity android:name=".CreateUserProfileActivity">
         </activity>
 

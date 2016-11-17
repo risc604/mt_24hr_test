@@ -18,12 +18,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -42,7 +47,8 @@ import java.util.List;
 import static com.microlife.software.a24hr_mt.BluetoothLeService.ACTION_ENABLE;
 import static java.lang.String.format;
 
-public class MainActivity extends AppCompatActivity implements fragmentBady.updateTempListener
+public class MainActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener
 {
     private final static String TAG = MainActivity.class.getSimpleName();
 
@@ -307,11 +313,6 @@ public class MainActivity extends AppCompatActivity implements fragmentBady.upda
             mBluetoothLeService.close();
         unregisterReceiver(mGattUpdateReceiver);
         */
-    }
-
-    @Override
-    public void updateTemp(String tmp)
-    {
     }
 
     private void startScanDevice(boolean enable)
@@ -801,6 +802,39 @@ public class MainActivity extends AppCompatActivity implements fragmentBady.upda
                 }
             }
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item)
+    {
+        int id = item.getItemId();
+        switch(id)
+        {
+            case R.id.nav_camera:
+                // Handle the camera action
+                break;
+
+            case R.id.nav_gallery:
+                break;
+
+            case R.id.nav_manage:
+                break;
+
+            //case R.id.nav_share:
+            //    break;
+
+            //case R.id.nav_send:
+            //    break;
+
+            //case R.id.nav_slideshow:
+            //    break;
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+
+        //return false;
     }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter

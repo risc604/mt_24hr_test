@@ -30,8 +30,8 @@ public class fragmentBady extends PagerFragment implements NumberPicker.OnValueC
     //}
 
     private final static String TAG = fragmentBady.class.getSimpleName();
-    public TextView    BdtvYearDate, BdtvTemprature, BdtvTRUnit, BdtvUnitH, BdtvUnitL, BdtvHigh, BdtvLow;
-    updateTempListener mCallback;
+    public TextView     BdtvYearDate, BdtvTemprature, BdtvTRUnit;
+    public TextView     BdtvUnitH, BdtvUnitL, BdtvHigh, BdtvLow;
     private View        mViewRoot;
     private ImageView   imgSmile, imgAlarm, imgBT, imgBattery;
     private int         itemId ;
@@ -86,10 +86,12 @@ public class fragmentBady extends PagerFragment implements NumberPicker.OnValueC
         BdtvYearDate = (TextView) root.findViewById(R.id.tvYear);
         BdtvTRUnit = (TextView) root.findViewById(R.id.tvTRUnit);
 
-        BdtvHigh = (TextView) root.findViewById(R.id.tvTPLow);
+        BdtvHigh = (TextView) root.findViewById(R.id.tvTPHigh);
+        BdtvHigh.setText(String.format("%02d.%02d", limitValue[2], 0) );
         BdtvUnitH = (TextView) root.findViewById(R.id.tvUnitH);
         imgAlarm = (ImageView) root.findViewById(R.id.ivAlarm);
-        BdtvLow = (TextView) root.findViewById(R.id.tvTPHigh);
+        BdtvLow = (TextView) root.findViewById(R.id.tvTPLow);
+        BdtvLow.setText(String.format("%02d.%02d", limitValue[0], 0));
         BdtvUnitL = (TextView) root.findViewById(R.id.tvUnitL);
 
         imgBT = (ImageView) root.findViewById(R.id.ivUserProfile);
@@ -221,10 +223,6 @@ public class fragmentBady extends PagerFragment implements NumberPicker.OnValueC
 
     }
 
-    public interface updateTempListener
-    {
-        public void updateTemp(String tmp);
-    }
 
 
 }
