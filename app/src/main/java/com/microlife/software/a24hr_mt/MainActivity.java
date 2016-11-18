@@ -26,8 +26,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +73,10 @@ public class MainActivity extends AppCompatActivity implements
     ViewPager               mPager;
     ViewPagerAdapter        mAdapter;
     private PageIndicator   mIndicator;
+    Toolbar                 toolbar;
+    DrawerLayout            drawer;
+    NavigationView          navigationView;
+    //ActionBarDrawerToggle   toggle;
     static int              vBatValue = 0;
 
     private String          bleParserInfo = "";
@@ -219,6 +226,7 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate().");
 
+        initNavigationView();
         initMainView();
         //Utils.shortFileName(".log");
 
@@ -317,19 +325,16 @@ public class MainActivity extends AppCompatActivity implements
 
     private void startScanDevice(boolean enable)
     {
-        if (Build.VERSION.SDK_INT >= 21)
-        {
-            mLEScanner = mBluetoothAdapter.getBluetoothLeScanner();
-            settings = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build();
+        mLEScanner = mBluetoothAdapter.getBluetoothLeScanner();
+        settings = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build();
 
-            Log.d("filters", " new filter list.");
-            filters = new ArrayList<ScanFilter>();
-            //ScanFilter bleFilter = new ScanFilter.Builder().setServiceUuid(
-            //                        mBluetoothLeService.UUID_MLC_CHAR).build();
-            ScanFilter bleFilterAddr = new ScanFilter.Builder().setDeviceAddress(DEV_ADDRESS).build();
-            //filters.add(bleFilter);
-            filters.add(bleFilterAddr);
-        }
+        Log.d("filters", " new filter list.");
+        filters = new ArrayList<ScanFilter>();
+        //ScanFilter bleFilter = new ScanFilter.Builder().setServiceUuid(
+        //                        mBluetoothLeService.UUID_MLC_CHAR).build();
+        ScanFilter bleFilterAddr = new ScanFilter.Builder().setDeviceAddress(DEV_ADDRESS).build();
+        //filters.add(bleFilter);
+        filters.add(bleFilterAddr);
         scanLeDevice(enable);
         Log.d(TAG, "startScanDevice() finish.");
     }
@@ -752,6 +757,22 @@ public class MainActivity extends AppCompatActivity implements
         return vBatValue ;
     }
 
+    private void initNavigationView()
+    {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView = (NavigationView)findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        //TabViewPagerFunction();
+    }
+
     private void initMainView()
     {
         Log.i(TAG, "initMainView() ...");
@@ -805,6 +826,38 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onBackPressed()
+    {
+        DrawerLayout    drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START))
+        {
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        else
+        {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.left_side_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int id = item.getItemId();
+        if (id == R.id.action_settings)
+        {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item)
     {
         int id = item.getItemId();
@@ -840,8 +893,8 @@ public class MainActivity extends AppCompatActivity implements
     private class ViewPagerAdapter extends FragmentPagerAdapter
     {
         private ArrayList<PagerFragment> mFragments = new ArrayList<PagerFragment>();
-        public fragmentBady fBady;
-        public fragmentGraphics  fGraphics;
+        public fragmentBady     fBady;
+        public fragmentGraphics fGraphics;
 
         public ViewPagerAdapter(FragmentManager fm)
         {

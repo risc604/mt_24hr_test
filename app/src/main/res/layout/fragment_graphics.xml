@@ -5,7 +5,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/white"
-                android:id="@+id/llgraph" android:weightSum="1">
+                android:id="@+id/llgraph" android:weightSum="1"
+    >
 
     <ImageView
         app:srcCompat="@drawable/icon_email"

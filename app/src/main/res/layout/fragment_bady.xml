@@ -1,19 +1,21 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/flBady">
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:id="@+id/flBady"
+    >
 
 
     <!-- TODO: Update blank fragment layout -->
 
     <RelativeLayout
-        android:layout_width="281dp"
         android:id="@+id/rl_circle"
         android:background="@drawable/light_blue"
-        android:layout_height="286dp"
-        android:layout_marginLeft="25dp" tools:ignore="RtlHardcoded">
+        tools:ignore="RtlHardcoded"
+        android:layout_marginLeft="30dp"
+        android:layout_width="320dp"
+        android:layout_height="320dp">
 
         <ImageView
             app:srcCompat="@drawable/pic_smile"
@@ -63,12 +65,12 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_marginTop="320dp"
+        android:layout_marginTop="350dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_width="320dp"
-        android:layout_height="92dp"
-        android:id="@+id/rl_Setting">
+        android:layout_width="match_parent"
+        android:id="@+id/rl_Setting"
+        android:layout_height="100dp">
 
         <ImageView
             android:layout_width="30dp"
