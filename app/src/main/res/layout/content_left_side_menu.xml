@@ -34,6 +34,7 @@
             android:textColor="@color/vpi__background_holo_dark" android:textSize="24sp"
             android:textStyle="bold" android:textIsSelectable="true"
             android:textAlignment="center"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -42,18 +43,18 @@
         android:orientation="vertical"
         >
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/ViewPager_Main"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:drawable/list_selector_background"/>
-
         <com.viewpagerindicator.CirclePageIndicator
             android:id="@+id/indicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/default_circle_indicator_page_color"
             android:padding="10dp"/>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/ViewPager_Main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:drawable/list_selector_background"/>
 
         <!--fragment
             android:layout_width="match_parent"
