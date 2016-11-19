@@ -96,7 +96,7 @@ public class fragmentBady extends PagerFragment implements NumberPicker.OnValueC
 
         imgBT = (ImageView) root.findViewById(R.id.ivUserProfile);
         imgBattery = (ImageView) root.findViewById(R.id.ivBattery);
-        imgBattery.setVisibility(View.INVISIBLE);
+        imgBattery.setVisibility(View.VISIBLE);
 
         //BdtvTemprature.setText("--.--");
     }
@@ -155,13 +155,13 @@ public class fragmentBady extends PagerFragment implements NumberPicker.OnValueC
                 switch (itemId)
                 {
                     case R.id.tvTPLow:
-                        BdtvHigh.setText(newText);
-                        Log.e(TAG, "BdtvHigh.text : " + BdtvHigh.getText());
+                        BdtvLow.setText(newText);
+                        Log.e(TAG, "BdtvLow.text : " + BdtvHigh.getText());
                         break;
 
                     case R.id.tvTPHigh:
-                        BdtvLow.setText(newText);
-                        Log.e(TAG, "BdtvLow.text : " + BdtvLow.getText());
+                        BdtvHigh.setText(newText);
+                        Log.e(TAG, "BdtvHigh.text : " + BdtvLow.getText());
                         break;
 
                     default:
